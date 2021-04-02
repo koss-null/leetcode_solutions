@@ -34,6 +34,7 @@ def check_result(test):
     out = test.output.decode("ascii").strip()
     if test.expected == out: 
         print_green(f"Test: {test.name} is [OK]")
+        print_green(out)
     else:
         print_red(f"Test: {test.name} is [FAIL]")
         print_green(test.expected)
