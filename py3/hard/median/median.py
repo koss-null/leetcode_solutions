@@ -12,7 +12,7 @@ class Solution:
                 rg = md - 1
             md = (lf + rg) // 2
 
-        if fits(arr[md], num):
+        if arr and fits(arr[md], num):
             # searching the biggest possible step to each side and do it as many times as possible
             left_step, right_step = 1 << 20, 1 << 20
             lf_offset, rg_offset = 0, 0
