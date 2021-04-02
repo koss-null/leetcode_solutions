@@ -34,19 +34,21 @@ class Solution:
         place1, place2 = self.bin_search(nums1, num), self.bin_search(nums2, num)
         return [place1[0] + place2[0], place1[1] + int(place1[2]) + place2[1] + int(place2[2])]
 
+    class Shared:
+        def __init__(self, nums, other_nums):
+            self.p = None
+            self.nums = nums
+            self.other_nums = other_nums
+
+        def fits(self, a, b):
+            self.p = Solution().place(self.nums, self.other_nums, a)
+            return self.p[0] <= b < self.p[0] + self.p[1]
+
+        def le(self, _, b):
+            return self.p[0] < b
+
     def find_place(self, nums, other_nums, desired_place):
-        class Shared:
-            def __init__(self):
-                self.p = None
-
-            def fits(self, a, b):
-                self.p = Solution().place(nums, other_nums, a)
-                return self.p[0] <= b < self.p[0] + self.p[1]
-
-            def le(self, _, b):
-                return self.p[0] < b
-
-        s = Shared()
+        s = self.Shared(nums, other_nums)
         p = self.bin_search(
             nums,
             desired_place,

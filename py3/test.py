@@ -1,11 +1,10 @@
 #!/usr/bin/python3 
 
 import os
-import io
 import re
 import sys
+import time
 import json
-import filecmp
 import subprocess
 
 from collections import namedtuple as nt
@@ -27,16 +26,16 @@ def print_red(text):
     print(f"{bcolors.FAIL}{text}{bcolors.ENDC}")  
 
 
-Test = nt("Test", "process output expected name")
+Test = nt("Test", "process output expected name duration")
 
 
 def check_result(test):
     out = test.output.decode("ascii").strip()
     if test.expected == out: 
-        print_green(f"Test: {test.name} is [OK]")
+        print_green(f"Test: {test.name} is [OK]\tduration: {test.duration}")
         print_green(out)
     else:
-        print_red(f"Test: {test.name} is [FAIL]")
+        print_red(f"Test: {test.name} is [FAIL]\tduration: {test.duration}")
         print_green(test.expected)
         print_red(out)
         print("-" * 10)
@@ -44,14 +43,17 @@ def check_result(test):
 
 def run_test(program_path, test_path):
     with open(test_path, "r") as test:
-        test_case = json.load(test) 
+        test_case = json.load(test)
+        started = time.time()
+        p = subprocess.Popen(["python3", program_path + "/" + program_path.split("/")[-1] + ".py"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        finished = time.time()
         p = subprocess.Popen(["python3", program_path + "/" + program_path.split("/")[-1] + ".py"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         outp, errs = p.communicate(str(test_case["input"]).encode("ascii"))
         if errs:
             print_red("[FAIL]")
             print(errs)
             return
-        check_result(Test(p, outp, test_case["output"], test_path.split("/")[-1]))
+        check_result(Test(p, outp, test_case["output"], test_path.split("/")[-1], finished - started))
 
 
 def main(argv):
