@@ -1,0 +1,2 @@
+There is a file "generate_large.go" which generates ~150MB file for tests.
+The reason it's written in go is that it takes infinite RAM to do it in python
