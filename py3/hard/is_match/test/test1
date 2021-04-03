@@ -1,0 +1,4 @@
+{
+"input": "aa\na*",
+"output": "True"
+}

@@ -1,0 +1,4 @@
+{
+"input": "mississippi\nmis*is*ip*.",
+"output": "True"
+}

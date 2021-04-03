@@ -1,0 +1,4 @@
+{
+"input": "mississippi\nmis*is*p*.",
+"output": "False"
+}
