@@ -1,36 +1,59 @@
 class Solution(object):
-    def fit(self, s, re_piece, offset, is_next_star):
-        for i, c in enumerate(re_piece):
-            if not (
-                c == "." or
-                s[i + offset] == "." or
-                c == s[i + offset] or
-                (i == len(re_piece) - 1 and is_next_star)
-            ):
-                return False
-        return True
+    class Rune:
+        def __new__(cls, c, prev):
+            if c == "*":
+                prev.any_quantity = True
+                return prev
+            return super(Solution.Rune, cls).__new__(cls)
 
-    def check_match(self, s, rg, rg_i, offset=0):
-        if rg_i == len(rg):
-            return len(s) == offset
-        while offset < len(s):
-            if self.fit(s, rg[rg_i][0], offset, rg_i + 1 < len(rg)):
-                offset += max(len(rg[rg_i][0]), 1)
-                return self.check_match(s, rg, rg_i+1, offset)
-            elif offset + 1 < len(s) and s[offset+1] == rg[rg_i][1]:
-                offset += 1
-            else:
+        def __init__(self, c, prev):
+            if c != "*":
+                self.c = c
+                self.prev = prev
+                self.any = c == "."
+                self.next = None
+                self.any_quantity = False
+                if prev:
+                    prev.next = self
+
+        def match(self, s, place):
+            if place >= len(s):
+                if self.any_quantity:
+                    return self.next is None
                 return False
-        if offset == len(s):
-            return False
+
+            if self.any:
+                if not self.next:
+                    return True
+                return self.next.match(s, place+1)
+
+            if self.c != s[place]:
+                if self.any_quantity:
+                    if not self.next:
+                        return False
+                    return self.next.match(s, place)
+                return False
+
+            if not self.next:
+                return True
+
+            if self.any_quantity:
+                try_this = self.next.match(s, place+1)
+
+                if try_this:
+                    return True
+                return self.match(s, place+1)
+            return self.next.match(s, place+1)
 
     def isMatch(self, s, p):
-        rg = []
-        p_sp = p.split("*")
-        for i, r in enumerate(p_sp):
-            rg.append([r, p_sp[i-1][len(p_sp[i-1])-1] if i else "-"])
-
-        return self.check_match(s, rg, 0)
+        head = None
+        tail = None
+        for c in p:
+            r = self.Rune(c, tail)
+            if not head:
+                head = r
+            tail = r
+        return head.match(s, 0)
 
 
 def main(a, b):
