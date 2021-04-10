@@ -33,11 +33,13 @@ class Solution(object):
         return self.check_match(s, rg, 0)
 
 
-def main():
-    a = input()
-    b = input()
-    print(Solution().isMatch(a, b))
+def main(a, b):
+    return Solution().isMatch(a, b)
 
 
-if __name__ == "__main__":
-    main()
+def get_input(inp):
+    return inp.split("\n")
+
+
+def format_output(a):
+    return str(a)

@@ -84,11 +84,17 @@ class Solution:
         return -1
 
 
-def main():
-    a = list(map(int, input().split()))
-    b = list(map(int, input().split()))
-    print(Solution().findMedianSortedArrays(a, b))
+def main(a, b):
+    return Solution().findMedianSortedArrays(a, b)
 
 
-if __name__ == "__main__":
-    main()
+def get_input(inp):
+    inp = inp.split("\n")
+    a = list(map(int, inp[0].split()))
+    b = list(map(int, inp[1].split()))
+    return a, b
+
+
+def format_output(a):
+    return str(a)
+

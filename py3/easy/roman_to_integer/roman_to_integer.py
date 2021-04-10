@@ -18,10 +18,13 @@ class Solution(object):
         return num + cache
 
 
-def main():
-    a = input()
-    print(Solution().romanToInt(a))
+def get_input(inp):
+    return inp
 
 
-if __name__ == "__main__":
-    main()
+def format_output(a):
+    return str(a)
+
+
+def main(a):
+    return Solution().romanToInt(a)
