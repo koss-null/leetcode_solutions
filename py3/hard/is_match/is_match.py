@@ -36,7 +36,9 @@ class Solution(object):
         def match(self, s, place):
             if place >= len(s):
                 if self.any_quantity:
-                    return self.next is None
+                    if self.next:
+                        return self.next.match(s, place)
+                    return True
                 return False
 
             if self.any:
