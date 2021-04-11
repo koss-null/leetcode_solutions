@@ -52,7 +52,7 @@ def listify(a):
     if isinstance(a, str):
         return [a.strip()]
     if isinstance(a, abc.Iterable):
-        return a
+        return list(filter(None, a))
     return [a]
 
 

@@ -23,8 +23,15 @@ class Solution(object):
                 return False
 
             if self.any:
+                if self.any_quantity:
+                    if not self.next:
+                        return True  # .* at the end matches everything
+                    try_this = self.match(s, place+1)
+                    if try_this:
+                        return True
+                    return self.next.match(s, place+1)
                 if not self.next:
-                    return True
+                    return place+1 == len(s)
                 return self.next.match(s, place+1)
 
             if self.c != s[place]:
@@ -34,15 +41,18 @@ class Solution(object):
                     return self.next.match(s, place)
                 return False
 
-            if not self.next:
-                return True
-
             if self.any_quantity:
+                if not self.next:
+                    return self.match(s, place+1)
                 try_this = self.next.match(s, place+1)
 
                 if try_this:
                     return True
                 return self.match(s, place+1)
+
+            if not self.next:
+                return place+1 == len(s)
+
             return self.next.match(s, place+1)
 
     def isMatch(self, s, p):
