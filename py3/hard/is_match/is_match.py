@@ -1,3 +1,18 @@
+def _saved_score(func):
+    def wrapper(*args, **kwargs):
+        obj = args[0]
+        if len(args) > 2:
+            place = args[2]
+        else:
+            place = kwargs["place"]
+        if place in obj.answers:
+            return obj.answers[place]
+        res = func(*args, **kwargs)
+        obj.answers[place] = res
+        return res
+    return wrapper
+
+
 class Solution(object):
     class Rune:
         def __new__(cls, c, prev):
@@ -13,9 +28,11 @@ class Solution(object):
                 self.any = c == "."
                 self.next = None
                 self.any_quantity = False
+                self.answers = {}
                 if prev:
                     prev.next = self
 
+        @_saved_score
         def match(self, s, place):
             if place >= len(s):
                 if self.any_quantity:
