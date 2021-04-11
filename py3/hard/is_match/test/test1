@@ -1,4 +1,4 @@
 {
-"input": "aa\na*\n",
+"input": "aa\na*",
 "output": "True"
 }

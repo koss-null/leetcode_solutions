@@ -1,0 +1,4 @@
+{
+"input":"aaaaaaaaaaaaab\na*a*a*a*a*a*a*a*a*a*c",
+"output":"False"
+}

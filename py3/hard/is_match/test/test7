@@ -1,0 +1,4 @@
+{
+"input": "bbbba\n.*a*a",
+"output": "True"
+}

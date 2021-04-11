@@ -26,10 +26,13 @@ class Solution(object):
                 if self.any_quantity:
                     if not self.next:
                         return True  # .* at the end matches everything
-                    try_this = self.match(s, place+1)
+                    try_this = self.next.match(s, place+1)
                     if try_this:
                         return True
-                    return self.next.match(s, place+1)
+                    try_this = self.next.match(s, place)
+                    if try_this:
+                        return True
+                    return self.match(s, place+1)
                 if not self.next:
                     return place+1 == len(s)
                 return self.next.match(s, place+1)
@@ -45,7 +48,9 @@ class Solution(object):
                 if not self.next:
                     return self.match(s, place+1)
                 try_this = self.next.match(s, place+1)
-
+                if try_this:
+                    return True
+                try_this = self.next.match(s, place)
                 if try_this:
                     return True
                 return self.match(s, place+1)
@@ -63,6 +68,8 @@ class Solution(object):
             if not head:
                 head = r
             tail = r
+        if not head:
+            return not s
         return head.match(s, 0)
 
 
